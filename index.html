@@ -54,11 +54,14 @@
   const dino = document.getElementById("dino");
   let isJumping = false;
 
-  document.addEventListener("keydown", function(event) {
-    if (event.code === "Space" && !isJumping) {
-      jump();
-    }
-  });
+ function handleKeydown(event) {
+  if (event.code === "Space" && !isJumping) {
+    jump();
+  }
+}
+
+document.addEventListener("keydown", handleKeydown);
+
 
   function jump() {
     isJumping = true;
@@ -95,12 +98,25 @@ function moveCactus() {
       cactusPosition -= 5;
       cactus.style.right = (600 - cactusPosition) + "px";
     }
+
+    // 📦 撞擊偵測
+    const dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("bottom"));
+    if (cactusPosition > 50 && cactusPosition < 110 && dinoTop < 40) {
+      clearInterval(cactusInterval); // 停止 cactus
+      document.removeEventListener("keydown", handleKeydown); // 停止跳躍
+      document.getElementById("gameOver").style.display = "block"; // 顯示訊息
+    }
+
   }, 20);
 }
+
 
 moveCactus(); 
 
 </script>
+<div id="gameOver" style="display: none; text-align: center; font-size: 32px; color: red; font-weight: bold;">
+  Game Over 🪦
+</div>
 
 </body>
 </html>
