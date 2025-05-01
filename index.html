@@ -41,6 +41,15 @@
   bottom: 0;
   right: 0;
 }
+    #cactus2 {
+  width: 20px;
+  height: 40px;
+  background-color: red;
+  position: absolute;
+  bottom: 0;
+  right: -300px; /* 比第一顆靠後出現 */
+}
+
 
 
   </style>
@@ -53,6 +62,8 @@
   <div id="game">
     <div id="dino"></div>
     <div id="cactus"></div> 
+    <div id="cactus2"></div>
+
   </div>
   <script>
   const dino = document.getElementById("dino");
@@ -95,6 +106,8 @@ document.addEventListener("keydown", handleKeydown);
     }, 20);
   }
     const cactus = document.getElementById("cactus");
+    const cactus2 = document.getElementById("cactus2");
+
 
 function moveCactus() {
   let cactusPosition = 600;
@@ -133,9 +146,43 @@ else {
 
   }, 20);
 }
+    function moveCactus2() {
+  let cactus2Position = 900;
+
+  const cactus2Interval = setInterval(() => {
+    if (cactus2Position < -20) {
+      cactus2Position = 600 + Math.random() * 200;
+      score++;
+      document.getElementById("score").innerText = "分數：" + score;
+      speed += 0.2;
+    } else {
+      cactus2Position -= speed;
+      cactus2.style.right = (600 - cactus2Position) + "px";
+    }
+
+    // 碰撞偵測
+    const dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("bottom"));
+    if (cactus2Position > 50 && cactus2Position < 110 && dinoTop < 40) {
+      clearInterval(cactus2Interval);
+      document.removeEventListener("keydown", handleKeydown);
+
+      if (score > highScore) {
+        highScore = score;
+      }
+
+      document.getElementById("gameOver").innerHTML =
+        `Game Over 🪦<br>得分：${score}<br>最高分：${highScore}`;
+      document.getElementById("gameOver").style.display = "block";
+    }
+
+  }, 20);
+}
+
 
 
 moveCactus(); 
+    moveCactus2();
+
 
 </script>
 <div id="gameOver" style="display: none; text-align: center; font-size: 32px; color: red; font-weight: bold;">
