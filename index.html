@@ -38,5 +38,40 @@
   <div id="game">
     <div id="dino"></div>
   </div>
+  <script>
+  const dino = document.getElementById("dino");
+  let isJumping = false;
+
+  document.addEventListener("keydown", function(event) {
+    if (event.code === "Space" && !isJumping) {
+      jump();
+    }
+  });
+
+  function jump() {
+    isJumping = true;
+    let position = 0;
+    let upInterval = setInterval(function () {
+      if (position >= 100) {
+        clearInterval(upInterval);
+        // 下落
+        let downInterval = setInterval(function () {
+          if (position <= 0) {
+            clearInterval(downInterval);
+            isJumping = false;
+          } else {
+            position -= 5;
+            dino.style.bottom = position + "px";
+          }
+        }, 20);
+      } else {
+        // 上升
+        position += 5;
+        dino.style.bottom = position + "px";
+      }
+    }, 20);
+  }
+</script>
+
 </body>
 </html>
