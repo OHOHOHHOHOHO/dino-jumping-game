@@ -56,8 +56,11 @@
   </div>
   <script>
   const dino = document.getElementById("dino");
-    let score = 0;
-  let isJumping = false;
+let isJumping = false;
+let score = 0;
+let highScore = 0;
+let speed = 5; // ✅ 初始速度
+
 
  function handleKeydown(event) {
   if (event.code === "Space" && !isJumping) {
@@ -100,21 +103,33 @@ function moveCactus() {
     if (cactusPosition < -20) {
   cactusPosition = 600 + Math.random() * 200;
 
-  // 加分數
+  // ✅ 加分 + 加速
   score++;
   document.getElementById("score").innerText = "分數：" + score;
-}else {
-      cactusPosition -= 5;
+  speed += 0.2; // 越來越快
+}
+else {
+      cactusPosition -= speed;
       cactus.style.right = (600 - cactusPosition) + "px";
     }
 
     // 📦 撞擊偵測
     const dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("bottom"));
     if (cactusPosition > 50 && cactusPosition < 110 && dinoTop < 40) {
-      clearInterval(cactusInterval); // 停止 cactus
-      document.removeEventListener("keydown", handleKeydown); // 停止跳躍
-      document.getElementById("gameOver").style.display = "block"; // 顯示訊息
-    }
+  clearInterval(cactusInterval); // 停止 cactus
+  document.removeEventListener("keydown", handleKeydown); // 停止跳躍
+
+  // ✅ 更新最高分
+  if (score > highScore) {
+    highScore = score;
+  }
+
+  // ✅ 顯示 Game Over + 分數
+  document.getElementById("gameOver").innerHTML =
+    `Game Over 🪦<br>得分：${score}<br>最高分：${highScore}`;
+  document.getElementById("gameOver").style.display = "block";
+}
+
 
   }, 20);
 }
