@@ -33,12 +33,22 @@
   bottom: 0;
   left: 50px;
 }
+    #cactus {
+  width: 20px;
+  height: 40px;
+  background-color: red;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
 
   </style>
 </head>
 <body>
   <div id="game">
     <div id="dino"></div>
+    <div id="cactus"></div> 
   </div>
   <script>
   const dino = document.getElementById("dino");
@@ -73,6 +83,23 @@
       }
     }, 20);
   }
+    const cactus = document.getElementById("cactus");
+
+function moveCactus() {
+  let cactusPosition = 600;
+
+  const cactusInterval = setInterval(() => {
+    if (cactusPosition < -20) {
+      cactusPosition = 600 + Math.random() * 200;
+    } else {
+      cactusPosition -= 5;
+      cactus.style.right = (600 - cactusPosition) + "px";
+    }
+  }, 20);
+}
+
+moveCactus(); 
+
 </script>
 
 </body>
