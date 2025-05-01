@@ -46,12 +46,17 @@
   </style>
 </head>
 <body>
+  <div id="score" style="text-align:center; font-size: 24px; font-weight: bold;">
+  分數：0
+</div>
+
   <div id="game">
     <div id="dino"></div>
     <div id="cactus"></div> 
   </div>
   <script>
   const dino = document.getElementById("dino");
+    let score = 0;
   let isJumping = false;
 
  function handleKeydown(event) {
@@ -93,8 +98,12 @@ function moveCactus() {
 
   const cactusInterval = setInterval(() => {
     if (cactusPosition < -20) {
-      cactusPosition = 600 + Math.random() * 200;
-    } else {
+  cactusPosition = 600 + Math.random() * 200;
+
+  // 加分數
+  score++;
+  document.getElementById("score").innerText = "分數：" + score;
+}else {
       cactusPosition -= 5;
       cactus.style.right = (600 - cactusPosition) + "px";
     }
